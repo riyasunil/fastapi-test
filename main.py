@@ -2,6 +2,7 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import heartpy as hp
 import pandas as pd
+import numpy as np 
 from io import BytesIO
 app = FastAPI()
 
@@ -25,13 +26,14 @@ async def evaluate_hrv(file: UploadFile = File(...)):
             raise ValueError("CSV file must contain 'ecg' column.")
 
         # Extract ECG data column from the CSV file
-        hrdata = df['ecg'].values.tolist()
+        ecg = df['ecg'].values[:1000].tolist()
+
 
         # Process HRV
         fs = 200.137457
-        working_data_hrv, measures_hrv = hp.process(hrdata, fs, report_time=True, calc_freq=True, high_precision=True, high_precision_fs=1000.0)
-        
-        return measures_hrv
+        working_data_hrv, measures_hrv = hp.process(ecg, fs, report_time=True, calc_freq=True, high_precision=True, high_precision_fs=1000.0)
+        print(measures_hrv)
+        return measures_hrv       
     except Exception as e:
         return {"error": str(e)}
 

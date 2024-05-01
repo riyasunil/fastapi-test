@@ -1,0 +1,64 @@
+# @app.post("/")
+# async def evaluate_bpv(file: UploadFile = File(...)):
+#     try:
+#         # Read the uploaded CSV file
+#         contents = await file.read()
+#         df = pd.read_csv(BytesIO(contents))
+#         if 'ecg' not in df.columns:
+#             raise ValueError("CSV file must contain 'ecg' column.")
+#         if 'ppg' not in df.columns:
+#             raise ValueError("CSV file must contain 'ppg' column.")
+#         # Extract ECG data column from the CSV file
+#         ecg = df['ecg'].values[:1000].tolist()
+#         ppg = df['ppg'].values[:1000].tolist()
+
+#         ln=len(ecg) 
+#         l=len(ppg) 
+#         m=0.6*(max(ecg))
+#         ECGX=np.zeros(ln) 
+#         for n in range(0, ln):
+#             if ecg[n] >= m:
+#                 if ecg[n] > ecg[n+1] and ecg[n] > ecg[n-1]:
+#                     ECGX[n] = n
+
+#         # Remove zero values from ECGX
+#         ECGX = [i for i in ECGX if i != 0]
+#         RX = ECGX[1:]  # PPGPEAK
+#         length = len(RX)
+
+#         # Threshold for PPG peaks
+#         t = 0.8 * (max(ppg))
+
+#         PPGX=np.zeros(l) 
+
+#         # Find PPG peaks
+#         for k in range(0, l):
+#             if ppg[k] >= t:
+#                 if ppg[k] > ppg[k+1] and ppg[k] >= ppg[k-1]:
+#                     PPGX[k] = k
+
+#         # Remove zero values from PPGX
+#         PPGX = [j for j in PPGX if j != 0]
+#         PX = PPGX[:-1]
+#         leng = len(PX)
+
+#         # Calculate PAT
+#         PAT = np.zeros(leng)
+#         for p in range(length):
+#             PAT[p] = RX[p] - PX[p]
+
+#         # Calculate mean PAT
+#         pat = np.mean(PAT)
+
+#         # Calculate DBP and SBP
+#         DBP = 54.53 + (0.77 * PAT)
+#         SBP = 149.8 - (0.765 * PAT)
+
+#         # Print results
+#         print("DBP =", DBP)
+#         print("SBP =", SBP)
+
+#         return {"DBP" : DBP, "SBP" : SBP}
+        
+#     except Exception as e:
+#         return {"error": str(e)}

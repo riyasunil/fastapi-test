@@ -14,7 +14,7 @@ app = FastAPI()
 # Load ECG data from CSV
 # show difference btw ecgsample r peaks and bpv4 r peaks
 
-hrdata = hp.get_data('bpv4.csv', delim=',', column_name='ecg')
+hrdata = hp.get_data('parthiv.csv', delim=',', column_name='ecg')
 print(hrdata)
 
 # sampling rate = 100
